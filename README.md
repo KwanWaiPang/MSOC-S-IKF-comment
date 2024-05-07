@@ -17,7 +17,10 @@
   cm
   
   #测试Euroc数据集
-  roslaunch ov_rimsckf pgeneva_ros_eth.launch
+  # roslaunch ov_rimsckf pgeneva_ros_eth.launch
 
-  evo_ape bag ***.bag /cpy_uav/viconros/odometry /envio_nesl/odom -va -p
+  roslaunch ov_rimsckf run_bag.launch
+
+  evo_ape bag HKU_aggressive_rotation.bag /cpy_uav/viconros/odometry /ov_rimsckf/odomimu -va -p
+  evo_traj bag HKU_aggressive_rotation.bag /ov_rimsckf/odomimu --ref=/cpy_uav/viconros/odometry -va --plot --plot_mode=xyz
 ~~~

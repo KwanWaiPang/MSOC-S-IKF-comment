@@ -147,6 +147,10 @@ void TrackKLT::feed_stereo(double timestamp, cv::Mat &img_leftin, cv::Mat &img_r
     t_lhe.join();
     t_rhe.join();
 
+    // //不做直方图均衡化
+    // img_left = img_leftin.clone();
+    // img_right = img_rightin.clone();
+
     // Extract image pyramids (boost seems to require us to put all the arguments even if there are defaults....)
     std::vector<cv::Mat> imgpyr_left, imgpyr_right;
     boost::thread t_lp = boost::thread(cv::buildOpticalFlowPyramid, boost::cref(img_left),

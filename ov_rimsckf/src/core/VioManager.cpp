@@ -323,6 +323,14 @@ void VioManager::feed_measurement_stereo(double timestamp, cv::Mat& img0, cv::Ma
         cout<<"downsample_cameras"<<endl;
     }
 
+    //如果他们的size不是346, 260,则resize
+    if(img0.size()!=cv::Size(346, 260) || img1.size()!=cv::Size(346, 260))
+    {
+        //此处将img0_buffer和img1_buffer resize为346, 260
+        cv::resize(img0, img0, cv::Size(346, 260));
+        cv::resize(img1, img1, cv::Size(346, 260));
+    }
+
     // Check if we should do zero-velocity, if so update the state with it
     
     if(is_initialized_vio && updaterZUPT != nullptr) {
@@ -331,16 +339,24 @@ void VioManager::feed_measurement_stereo(double timestamp, cv::Mat& img0, cv::Ma
             cv::Mat img_outtemp0, img_outtemp1;
             // cv::cvtColor(img0, img_outtemp0, CV_GRAY2RGB);
             //改为opencv4.0
+            // std::cout<<"334"<<std::endl;
             cv::cvtColor(img0, img_outtemp0, cv::COLOR_GRAY2RGB);
             // cv::cvtColor(img1, img_outtemp1, CV_GRAY2RGB);
             //改为opencv4.0
             cv::cvtColor(img1, img_outtemp1, cv::COLOR_GRAY2RGB);
+            // std::cout<<"339"<<std::endl;
             bool is_small = (std::min(img0.cols,img0.rows) < 400);
             auto txtpt = (is_small)? cv::Point(10,30) : cv::Point(30,60);
             cv::putText(img_outtemp0, "zvup active", txtpt, cv::FONT_HERSHEY_COMPLEX_SMALL, (is_small)? 1.0 : 2.0, cv::Scalar(0,0,255),3);
             cv::putText(img_outtemp1, "zvup active", txtpt, cv::FONT_HERSHEY_COMPLEX_SMALL, (is_small)? 1.0 : 2.0, cv::Scalar(0,0,255),3);
+
+            // 输出img_outtemp0的size
+            // std::cout<<"img_outtemp0 size: "<<img_outtemp0.size()<<std::endl;
+            // 输出img_outtemp1的size
+            // std::cout<<"img_outtemp1 size: "<<img_outtemp1.size()<<std::endl;
             cv::hconcat(img_outtemp0, img_outtemp1, zupt_image);
             stop_time.push_back(timestamp);
+            // std::cout<<"346"<<std::endl;
             return;
         }
     }

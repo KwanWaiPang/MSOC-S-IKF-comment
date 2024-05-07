@@ -539,8 +539,8 @@ void RosVisualizer::publish_state() {
 void RosVisualizer::publish_images() {
 
     // Check if we have subscribers
-    if(pub_tracks.getNumSubscribers()==0)
-        return;
+    // if(pub_tracks.getNumSubscribers()==0)
+    //     return;
 
     // Get our trackers
     TrackBase *trackFEATS = _app->get_track_feat();
