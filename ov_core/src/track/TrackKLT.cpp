@@ -35,6 +35,12 @@ void TrackKLT::feed_monocular(double timestamp, cv::Mat &img, size_t cam_id) {
     // Histogram equalize
     cv::equalizeHist(img, img);
 
+    // std::cout<<"img size: "<<img.cols<<" "<<img.rows<<std::endl;
+    //如果image的size不为346*260，就resize到这个大小
+    if(img.cols != 346 || img.rows != 260) {
+        cv::resize(img, img, cv::Size(346,260));
+    }
+
     // Extract the new image pyramid
     std::vector<cv::Mat> imgpyr;
     cv::buildOpticalFlowPyramid(img, imgpyr, win_size, pyr_levels);

@@ -1,8 +1,13 @@
 <launch>
 
     <!-- mono or stereo and what ros bag to play -->
-    <arg name="max_cameras" default="2" />
-    <arg name="use_stereo"  default="true" />
+    <!-- <arg name="max_cameras" default="2" />
+    <arg name="use_stereo"  default="true" /> -->
+
+    <!--改为单目试试 -->
+    <arg name="max_cameras" default="1" />
+    <arg name="use_stereo"  default="false" />
+
     <arg name="used_dataset" default="euroc" /> <!-- 先继续用euroc应该不会影响 -->
     <arg name="bag_start"   default="0" /> <!-- v1-2: 0, mh1: 40, mh2: 35, mh3-5: 20  -->
 
@@ -30,12 +35,13 @@
 
 
     <!-- MASTER NODE! -->
+    <!-- launch-prefix="gdb -ex run -\-args " -->
     <node name="run_subscribe_rimsckf" pkg="ov_rimsckf" type="run_subscribe_rimsckf" output="screen" clear_params="true" required="true">
 
         <!-- bag topics -->
         <param name="topic_imu"      type="string" value="/davis_left/imu" />
         <param name="topic_camera0"  type="string" value="/davis_left/image_raw" />
-        <param name="topic_camera1"  type="string" value="/davis_right/image_raw" />
+        <!-- <param name="topic_camera1"  type="string" value="/davis_right/image_raw" /> -->
         
         <!-- 真值？？？ -->
         <!-- <param name="path_gt"     type="string" value="$(find ov_data)/euroc_mav/V2_03_difficult.txt" /> -->
@@ -174,7 +180,7 @@
     <node pkg="rosbag" type="play" name="rosbag" args="--pause --clock -r 1.0 $(arg bag)" launch-prefix="gnome-terminal -x"/>
 
     <!-- 录制rosbag用于验证 -->
-    <node pkg="rosbag" type="record" name="bag_record" args="/ov_rimsckf/poseimu /ov_rimsckf/odomimu /cpy_uav/viconros/odometry -O /home/kwanwaipang/dataset/EVI-SAM/esvio/msocsikf_result/hku_hdr_tran_rota"/>
+    <node pkg="rosbag" type="record" name="bag_record" args="/ov_rimsckf/poseimu /ov_rimsckf/odomimu /cpy_uav/viconros/odometry -O /home/kwanwaipang/dataset/EVI-SAM/esvio/msocsikf_result_mono/hku_hdr_tran_rota"/>
 
     <!-- record the trajectory if enabled -->
     <!-- <group if="$(arg dosave)">
